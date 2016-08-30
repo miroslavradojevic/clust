@@ -17,7 +17,7 @@ public class Dist_Conn_ClusteringDemo implements PlugIn {
     public void run(String s) {
 
         int N = 60; // number of elements to cluster
-        float D = 4; // clustering inter-location distance in pixels (test 2)
+        float D = 4; // clustering inter-location distance in pixels (demo 2)
         int NN = 500;    // number of data vectors
         int K = 10;      // nr. clusters
         int H = 120, W = 120; // template image dimensions
@@ -41,7 +41,7 @@ public class Dist_Conn_ClusteringDemo implements PlugIn {
             Cxy.add(new float[]{x, y});
         }
 
-        IJ.log("# TEST 1:  group circles with different sizes (radii) into one cluster if they overlap");
+        IJ.log("# DEMO 1:  group circles with different radii into same cluster if they overlap");
 
         int[] lab = clustering1(Cxyr);
         ArrayList<float[]> C1 = extract_centroids(lab, Cxy);
@@ -50,7 +50,7 @@ public class Dist_Conn_ClusteringDemo implements PlugIn {
             IJ.log("C "+i+" : " + IJ.d2s(C1.get(i)[0],2) + ",\t" + IJ.d2s(C1.get(i)[1],2) + ",\t" + IJ.d2s(C1.get(i)[2],0) +" elements");
         }
 
-        ImagePlus im = new ImagePlus(N+" circles", new ByteProcessor(W, H));
+        ImagePlus im = new ImagePlus("DEMO 1: group "+N+" circles", new ByteProcessor(W, H));
 
         Overlay ov = new Overlay();
         ov.drawNames(true);
@@ -72,7 +72,7 @@ public class Dist_Conn_ClusteringDemo implements PlugIn {
         FileSaver fs = new FileSaver(im); // save it
         fs.saveAsTiff("clustering_test1.tif");
 
-        IJ.log("# TEST 2: group locations together if they are D pixels apart (=grouping circles with fixed radius D/2)");
+        IJ.log("# DEMO 2: group locations together if they are D pixels apart (=grouping circles with fixed radius D/2)");
 
         ArrayList<float[]> Pxy = new ArrayList<float[]>();
 
@@ -107,10 +107,9 @@ public class Dist_Conn_ClusteringDemo implements PlugIn {
             ov2.add(ovRoi);
         }
 
-        ImagePlus im2 = new ImagePlus("clustering2", new ByteProcessor(W, H));
+        ImagePlus im2 = new ImagePlus("DEMO 2: "+NN+" points, "+K+" clusters. Grouped if D<="+D, new ByteProcessor(W, H));
         im2.setOverlay(ov2);
         im2.show();
-
 
 
         for (int i = 0; i < 4; i++) im2.getCanvas().zoomIn(0, 0);
@@ -142,7 +141,7 @@ public class Dist_Conn_ClusteringDemo implements PlugIn {
 
         }
 
-        ImagePlus im3 = new ImagePlus("clustering3", new ByteProcessor(W, H));
+        ImagePlus im3 = new ImagePlus("estimate centroids", new ByteProcessor(W, H));
         im3.setOverlay(ov3);
         im3.show();
 
